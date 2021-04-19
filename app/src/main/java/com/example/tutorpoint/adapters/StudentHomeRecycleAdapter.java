@@ -41,6 +41,7 @@ public class StudentHomeRecycleAdapter extends RecyclerView.Adapter<StudentHomeR
         {
             imageURL = courses.get(position).images[0];
         }
+
         Glide.with(context).load(imageURL).into(holder.image);
         holder.image.setTag(imageURL);
         holder.image.setOnClickListener(new View.OnClickListener() {

@@ -180,11 +180,11 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject obj = jsonArray.getJSONObject(i);
 
-                            //JSONArray imgObjArr = obj.getJSONArray("images");
-                            JSONArray imgObjArr = new JSONArray();
+                            JSONArray imgObjArr = obj.getJSONArray("images");
+                            //JSONArray imgObjArr = new JSONArray();
                             String[] imgArr = new String[imgObjArr.length()];
                             for(int k=0; k < imgObjArr.length(); k++) {
-                                imgArr[k] = jsonArray.getString(k);
+                                imgArr[k] = imgObjArr.getString(k);
                             }
                             //    public Course(Date created_on, Date updated_on, User tutor, String status, String category, int hours_expectd, int student_capacity, int charges_per_hour, JSONArray timeSlots,
                             //                  String[] images, String videoLink) {

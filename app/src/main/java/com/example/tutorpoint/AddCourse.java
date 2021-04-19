@@ -231,13 +231,15 @@ public class AddCourse extends AppCompatActivity {
         jsonObject.put("tutor_id", new JSONObject(SharedPreferenceHelper.getSharedPreferenceString(getApplicationContext(),"user","")).getString("_id"));
         jsonObject.put("video_link", ((EditText)findViewById(R.id.video_link)).getText().toString());
 
-        JSONArray jsonArray=new JSONArray();
-
+        String[] imageArr = new String[productImages.size()];
+        int index = 0;
         for (ProductImages pi:productImages)
         {
-            jsonArray.put(new JSONObject().put("imageLink",pi.url));
+//            jsonArray.put(new JSONObject().put("imageLink",pi.url));
+            imageArr[index] = pi.url;
+            index++;
         }
-        jsonObject.put("images",jsonArray);
+        jsonObject.put("images",imageArr);
 
         JSONArray jsonArray1 = new JSONArray();
         String[] days = {"monday", "tuesday", "wednesday", "thursday","friday","saturday","sunday"};
