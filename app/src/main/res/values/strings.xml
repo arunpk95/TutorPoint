@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">Tutor Point</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="country_prompt">"Select Your Location"</string>
+
+    <string-array name="country_arrays">
+        <item>Select Your Country</item>
+        <item>Malaysia</item>
+        <item>United States</item>
+        <item>Canada</item>
+        <item>Indonesia</item>
+        <item>France</item>
+        <item>Italy</item>
+        <item>Singapore</item>
+        <item>New Zealand</item>
+        <item>India</item>
+    </string-array>
+
+    <string-array name="category_array">
+        <item>Uncategorized</item>
+        <item>Language</item>
+        <item>Marketing</item>
+        <item>Tools</item>
+        <item>Technology</item>
+        <item>Music</item>
+        <item>Design</item>
+        <item>Art</item>
+        <item>Maths</item>
+        <item>Physics</item>
+    </string-array>
+
+    <string-array name="courses">
+        <item>All</item>
+        <item>React Beginner</item>
+        <item>Excel Advanced</item>
+        <item>MERN stack beginner course</item>
+    </string-array>
+</resources>

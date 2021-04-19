@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddCourse">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="6dp"
+            app:cardElevation="6dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+
+                <ImageView
+                    android:id="@+id/addImgBtn"
+                    android:layout_width="300px"
+                    android:layout_height="300px"
+                    android:layout_gravity="center"
+                    android:src="@drawable/add_image"
+                    android:padding="50px"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewImgs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="horizontal"
+                    android:layout_marginTop="35dp"/>
+
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title of the course"
+            android:padding="15dp"
+            android:textSize="15dp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:hint="Enter the title of your course"
+            android:padding="10dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="15dp"
+            android:id="@+id/title"
+            />
+
+        <TextView
+            android:id="@+id/textViewCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Course Category"
+            android:padding="15dp"
+            android:textSize="15dp"/>
+        <Spinner
+            android:id="@+id/spinnerCategory"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:textSize="20dp"
+            android:padding="10dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="15dp"
+            android:entries="@array/category_array"
+            ></Spinner>
+
+        <TextView
+            android:id="@+id/textViewDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:padding="15dp"
+            android:textSize="15dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="15dp"
+            android:gravity="top"
+            android:hint="Enter Description of your course"
+            android:inputType="textMultiLine"
+            android:lines="7"
+            android:padding="10dp"
+            android:scrollbars="vertical"
+            android:textSize="20dp"
+            android:id="@+id/desc"/>
+
+
+        <TextView
+            android:id="@+id/textViewLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your Availability"
+            android:padding="15dp"
+            android:textSize="15dp"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="15dp"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Monday      "></TextView>
+                <EditText
+                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:inputType="number"
+                    android:id="@+id/mon1"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="to"></TextView>
+
+                <EditText
+                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:inputType="number"
+                    android:id="@+id/mon2"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tuesday     "></TextView>
+                <EditText
+                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:inputType="number"
+                    android:id="@+id/tue1" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="to"></TextView>
+
+                <EditText
+                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:inputType="number"
+                    android:id="@+id/tue2"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Wednesday"></TextView>
+                <EditText
+                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:inputType="number"
+                    android:id="@+id/wed1" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="to"></TextView>
+
+                <EditText
+                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:inputType="number"
+                    android:id="@+id/wed2"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thursday    "></TextView>
+                <EditText
+                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:inputType="number"
+                    android:id="@+id/thu1" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="to"></TextView>
+
+                <EditText
+                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:inputType="number"
+                    android:id="@+id/thu2"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Friday          "></TextView>
+                <EditText
+                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:inputType="number"
+                    android:id="@+id/fri1" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="to"></TextView>
+
+                <EditText
+                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:inputType="number"
+                    android:id="@+id/fri2"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Saturday     "></TextView>
+                <EditText
+                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:inputType="number"
+                    android:id="@+id/sat1" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="to"></TextView>
+
+                <EditText
+                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:inputType="number"
+                    android:id="@+id/sat2"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sunday       "></TextView>
+                <EditText
+                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:inputType="number"
+                    android:id="@+id/sun1"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="to"></TextView>
+
+                <EditText
+                    android:layout_height="wrap_content"
+                    android:layout_width="40dp"
+                    android:inputType="number"
+                    android:id="@+id/sun2"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/textViewhours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Hours Expected:  "
+            android:padding="15dp"
+            android:textSize="15dp"/>
+        <EditText
+            android:layout_width="65dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:id="@+id/hours"></EditText>
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/textViewcost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Charge per hour ($):      "
+                android:padding="15dp"
+                android:textSize="15dp"/>
+            <EditText
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:id="@+id/cost"></EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/textViewStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Available for New Enrollments:      "
+                android:padding="15dp"
+                android:textSize="15dp"/>
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:id="@+id/statusswitch"
+                >
+
+            </com.google.android.material.switchmaterial.SwitchMaterial>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/textViewvideo_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Course Video Link"
+            android:padding="15dp"
+            android:textSize="15dp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:hint="Enter Course Video Link"
+            android:padding="10dp"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="15dp"
+            android:id="@+id/video_link"
+            />
+        <Button
+            android:id="@+id/buttonAdd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Publish Course"
+            android:padding="10dp"
+            android:textSize="20dp"
+            android:backgroundTint="@color/black"
+            android:layout_margin="20dp"
+            />
+    </LinearLayout>
+
+
+</ScrollView>

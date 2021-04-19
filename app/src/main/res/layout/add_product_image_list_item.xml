@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="320px"
+    android:layout_height="320px"
+    android:orientation="vertical">
+
+
+    <RelativeLayout android:layout_width="300px"
+        android:layout_height="300px">
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#ffaadd"
+            android:layout_margin="20px" />
+
+
+        <ImageButton
+            android:id="@+id/deleteImage"
+            android:layout_width="40px"
+            android:layout_height="40px"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/cancel" />
+
+
+    </RelativeLayout>
+</LinearLayout>
