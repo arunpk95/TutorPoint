@@ -233,13 +233,14 @@ public class AddCourse extends AppCompatActivity {
 
         String[] imageArr = new String[productImages.size()];
         int index = 0;
+        JSONArray jsonArray = new JSONArray();
         for (ProductImages pi:productImages)
         {
-//            jsonArray.put(new JSONObject().put("imageLink",pi.url));
-            imageArr[index] = pi.url;
-            index++;
+            jsonArray.put(pi.url);
+            //imageArr[index] = pi.url;
+            //index++;
         }
-        jsonObject.put("images",imageArr);
+        jsonObject.put("images",jsonArray);
 
         JSONArray jsonArray1 = new JSONArray();
         String[] days = {"monday", "tuesday", "wednesday", "thursday","friday","saturday","sunday"};
