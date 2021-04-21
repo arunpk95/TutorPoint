@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="230dp">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/productCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="30dp"
         app:cardCornerRadius="3dp"
         app:cardElevation="10dp"
         android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+>
 
         <LinearLayout
             android:orientation="vertical"
@@ -36,15 +30,6 @@
                 android:textStyle="bold">
 
             </TextView>
-
-            <TextView
-                android:id="@+id/hoursCompleted"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:text="Hours Completed: 13"
-                android:textSize="14dp"
-                android:textStyle="italic"></TextView>
 
             <TextView
                 android:id="@+id/courseTitle"
@@ -86,24 +71,30 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_margin="5dp"></Button>
+                    android:layout_margin="5dp"
+                    android:id="@+id/chat"></Button>
                 <Button
+                    android:visibility="gone"
+                    android:id="@+id/drop"
                     android:backgroundTint="#F44336"
                     android:text="Drop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_margin="5dp"></Button>
+
                 <Button
-                    android:backgroundTint="#009688"
-                    android:text="Completed"
+                    android:visibility="gone"
+                    android:id="@+id/complete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
-                    android:layout_margin="5dp"></Button>
+                    android:backgroundTint="#009688"
+                    android:text="Completed"></Button>
             </LinearLayout>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

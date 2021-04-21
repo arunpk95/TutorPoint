@@ -11,6 +11,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
@@ -54,6 +56,8 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
 
     ArrayList<Enrollment> requestedLists=new ArrayList<>(), mystudents= new ArrayList<>();
 
+    ArrayList<String> coursesSpinner = new ArrayList<>();
+    Spinner spin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +70,15 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
         progress_circular.setVisibility(View.GONE);
         studentRecycleView = findViewById(R.id.recycleViewStudents);
         notificationRecycler = findViewById(R.id.recycleViewNotification);
+        coursesSpinner.add("All");
+
+
+         spin = (Spinner) findViewById(R.id.coursesSpinner);
+
+        //Creating the ArrayAdapter instance having the country list
+        ArrayAdapter aa = new ArrayAdapter(this,android.R.layout.simple_spinner_item,coursesSpinner);
+        //Setting the ArrayAdapter data on the Spinner
+        spin.setAdapter(aa);
 
         removeAllViews();
 
@@ -76,6 +89,20 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
         }
 
 
+
+
+
+        spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                doStudentsFilter();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         findViewById(R.id.home).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +154,12 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
             }
         });
 
-
+        ((RadioGroup)findViewById(R.id.radioGroup)).setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                doStudentsFilter();
+            }
+        });
     }
 
 
@@ -181,6 +213,8 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
                 try {
                     JSONArray jsonArray = new JSONObject(s).getJSONArray("courses");
                     courses.clear();
+                    coursesSpinner.clear();
+                    coursesSpinner.add("All");
                     if (jsonArray.length() == 0) {
                         Toast.makeText(getApplicationContext(), "No courses found.", Toast.LENGTH_LONG).show();
                     } else {
@@ -211,10 +245,14 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
                                     obj.getString("video_link")
                             );
                             courses.add(c);
-
-
+                            coursesSpinner.add(c.title);
                         }
                     }
+
+                    //Creating the ArrayAdapter instance having the country list
+                    ArrayAdapter aa = new ArrayAdapter(getApplicationContext(),android.R.layout.simple_spinner_item,coursesSpinner);
+                    //Setting the ArrayAdapter data on the Spinner
+                    spin.setAdapter(aa);
                     updateHomeRecycler();
 
                 } catch (JSONException e) {
@@ -234,14 +272,59 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
         VolleySingleton.getInstance(this).addToRequestQueue(request);
     }
 
-    private void getStudents() throws JSONException{
-        students.add(new Student());
-        students.add(new Student());
-        students.add(new Student());
-        students.add(new Student());
-        students.add(new Student());
+    public void getStudents() throws JSONException{
+        progress_circular.setVisibility(View.VISIBLE);
 
-        updateStudentRecycler();
+        String url = "https://tutor-point-api.herokuapp.com/tutorPoint/api/getEnrollmentByTutor?tutorId="+new JSONObject(SharedPreferenceHelper.getSharedPreferenceString(getApplicationContext(),"user","")).getString("_id");
+
+        StringRequest request = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        progress_circular.setVisibility(View.INVISIBLE);
+                        try {
+                            JSONArray jsonArray = new JSONObject(s).getJSONArray("enrollment");
+                            mystudents.clear();
+                            if (jsonArray.length() == 0) {
+                                Toast.makeText(getApplicationContext(), "No requests found.", Toast.LENGTH_LONG).show();
+                            } else {
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject obj = jsonArray.getJSONObject(i);
+
+                                    if(!obj.getString("status").equals("requested"))
+                                    {
+                                        mystudents.add(new Enrollment(
+                                                obj.getString("status"),
+                                                obj.getString("student_comment"),
+                                                0,
+                                                obj.getDouble("student_rating"),
+                                                obj.getJSONObject("tutor_id").toString(),
+                                                obj.getJSONObject("course_id").toString(),
+                                                obj.getJSONObject("student_id").toString(),
+                                                obj.getString("_id")
+
+                                        ));
+                                    }
+
+                                }
+                            }
+                            doStudentsFilter();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                progress_circular.setVisibility(View.INVISIBLE);
+                Toast.makeText(getApplicationContext(), "Some error occurred -> " + volleyError, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        request.setShouldCache(false);
+        VolleySingleton.getInstance(this).addToRequestQueue(request);
     }
 
 
@@ -302,6 +385,59 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
 
 
 
+
+    public void doStudentsFilter()
+    {
+        ArrayList<Enrollment> finalList = new ArrayList<>();
+        int selectedRadio = ((RadioGroup)findViewById(R.id.radioGroup)).getCheckedRadioButtonId();
+        String option = "all";
+        switch (selectedRadio)
+        {
+            case R.id.radioButton1:
+                option = "all";
+                break;
+            case R.id.radioButton2:
+                option="enrolled";
+                break;
+            case R.id.radioButton3:
+                option = "completed";
+                break;
+            case R.id.radioButton4:
+                option = "dropped";
+                break;
+        }
+        for(Enrollment s:mystudents)
+        {
+            if(option.equals("all"))
+            {
+                finalList = mystudents;
+                break;
+            }
+            else if(option.equals(s.status))
+            {
+                finalList.add(s);
+            }
+        }
+        if(!((Spinner)(findViewById(R.id.coursesSpinner))).getSelectedItem().toString().equals("All")) {
+            ArrayList<Enrollment> finalList1 = new ArrayList<>();
+            for (Enrollment e : finalList) {
+                try {
+                    if((new JSONObject(e.courseobj).getString("title").equals(((Spinner)(findViewById(R.id.coursesSpinner))).getSelectedItem().toString())))
+                    {
+                        finalList1.add(e);
+                    }
+                } catch (JSONException jsonException) {
+                    jsonException.printStackTrace();
+                }
+            }
+            updateStudentRecycler(finalList1);
+        }
+        else
+        {
+            updateStudentRecycler(finalList);
+        }
+    }
+
     private void updateHomeRecycler() {
         homeRecycleView.setVisibility(View.VISIBLE);
 
@@ -312,7 +448,7 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
         homeRecycleView.setAdapter(homeAdapter);
     }
 
-    private void updateStudentRecycler() {
+    private void updateStudentRecycler(ArrayList<Enrollment> l) {
 
         studentRecycleView.setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.textViewCategory)).setVisibility(View.VISIBLE);
@@ -321,7 +457,7 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
 
 
         studentRecycleView.removeAllViews();
-        studentRecycleAdapter = new StudentRecycleAdapter(this, students);
+        studentRecycleAdapter = new StudentRecycleAdapter(this, l);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1, GridLayoutManager.VERTICAL, false);
         studentRecycleView.setLayoutManager(gridLayoutManager);
         studentRecycleView.setAdapter(studentRecycleAdapter);
@@ -331,6 +467,10 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
     {
         ((RecyclerView)findViewById(R.id.recycleViewNotification)).setVisibility(View.VISIBLE);
 
+        if(requestedLists.size() == 0)
+        {
+            Toast.makeText(getApplicationContext(), "No new requests found.", Toast.LENGTH_LONG).show();
+        }
 
         notificationRecycler.removeAllViews();
         tutorNotificationAdapter = new TutorNotificationAdapter(this, requestedLists);
