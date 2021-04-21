@@ -1,8 +1,9 @@
 package com.example.tutorpoint.modals;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Enrollment {
+public class Enrollment implements Serializable {
     public String status, student_comment;
     public int hours_completed;
     public Double student_rating;

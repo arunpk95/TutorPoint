@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -28,6 +29,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.example.tutorpoint.adapters.StudentEnrolledAdapter;
 import com.example.tutorpoint.adapters.StudentHomeRecycleAdapter;
 import com.example.tutorpoint.adapters.StudentRecycleAdapter;
 import com.example.tutorpoint.adapters.StudentRequestedAdapter;
@@ -48,7 +50,8 @@ import java.util.Date;
 
 public class MainActivityStudent extends AppCompatActivity {
     Toolbar searchToolBar;
-    StudentHomeRecycleAdapter homeAdapter,enrolledAdapter;
+    StudentHomeRecycleAdapter homeAdapter;
+    StudentEnrolledAdapter enrolledAdapter;
     RecyclerView homeRecycleView, enrolledCoursesView, requestedRecycler;
     ProgressBar progress_circular;
 
@@ -57,7 +60,7 @@ public class MainActivityStudent extends AppCompatActivity {
     StudentRequestedAdapter studentRequestedAdapter;
 
     ArrayList<Course> searchcourses  = new ArrayList<>(),  enrolledCourses = new ArrayList<>();
-    ArrayList<Enrollment> requestedLists = new ArrayList<>();
+    ArrayList<Enrollment> requestedLists = new ArrayList<>(), myenrollments = new ArrayList<>();
 
 
     SearchView searchView;
@@ -164,18 +167,13 @@ public class MainActivityStudent extends AppCompatActivity {
         ((RadioGroup)findViewById(R.id.radioGroup)).setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                updateEnrolledListFilter(radioGroup, i);
+                doEnrollFilter();
             }
         });
 
     }
 
-    private void updateEnrolledListFilter(RadioGroup radioGroup, int i) {
-        ArrayList<Course> tempList = new ArrayList<>();
-        for(Course c:enrolledCourses){
 
-        }
-    }
 
     @Override
     protected void onResume() {
@@ -206,6 +204,10 @@ public class MainActivityStudent extends AppCompatActivity {
             SharedPreferenceHelper.setSharedPreferenceString(getApplicationContext(),"user","");
             startActivity(new Intent(getApplicationContext(),Login.class));
             finish();
+        }
+        else if(id == R.id.profile)
+        {
+            startActivity(new Intent(getApplicationContext(), EditProfile.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -400,44 +402,29 @@ public class MainActivityStudent extends AppCompatActivity {
                         progress_circular.setVisibility(View.INVISIBLE);
                         try {
                             JSONArray jsonArray = object.getJSONArray("enrollment");
-                            enrolledCourses.clear();
+                            myenrollments.clear();
                             if (jsonArray.length() == 0) {
                                 Toast.makeText(getApplicationContext(), "No courses found.", Toast.LENGTH_LONG).show();
                             } else {
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject obj = jsonArray.getJSONObject(i);
+                                    if(!obj.getString("status").equals("requested"))
+                                    {
+                                        myenrollments.add(new Enrollment(
+                                                obj.getString("status"),
+                                                obj.getString("student_comment"),
+                                                0,
+                                                obj.getDouble("student_rating"),
+                                                obj.getJSONObject("tutor_id").toString(),
+                                                obj.getJSONObject("course_id").toString(),
+                                                obj.getJSONObject("student_id").toString(),
+                                                obj.getString("_id")
 
-                                    JSONArray imgObjArr = obj.getJSONArray("images");
-                                    //JSONArray imgObjArr = new JSONArray();
-                                    String[] imgArr = new String[imgObjArr.length()];
-                                    for(int k=0; k < imgObjArr.length(); k++) {
-                                        imgArr[k] = imgObjArr.getString(k);
+                                        ));
                                     }
-                                    //    public Course(Date created_on, Date updated_on, User tutor, String status, String category, int hours_expectd, int student_capacity, int charges_per_hour, JSONArray timeSlots,
-                                    //                  String[] images, String videoLink) {
-                                    Course c = new Course(
-                                            obj.getString("title"),
-                                            obj.getString("description"),
-                                            new Date(),
-                                            new Date(),
-                                            new User(),
-                                            obj.getString("status"),
-                                            obj.getString("category"),
-                                            obj.getInt("hours_expected"),
-                                            obj.getInt("students_capacity"),
-                                            obj.getInt("charge_per_hour"),
-                                            obj.getJSONArray("time_slot").toString(),
-                                            imgArr,
-                                            obj.getString("video_link")
-                                    );
-                                    c.id  = obj.getString("_id");
-                                    c.tutorid = obj.getString("tutor_id");
-                                    enrolledCourses.add(c);
-
-
                                 }
                             }
-                            updateEnrolledRecycle(enrolledCourses);
+                            doEnrollFilter();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -470,6 +457,42 @@ public class MainActivityStudent extends AppCompatActivity {
         ((RadioGroup)findViewById(R.id.radioGroup)).setVisibility(View.GONE);
     }
 
+    public void doEnrollFilter()
+    {
+        ArrayList<Enrollment> finalList = new ArrayList<>();
+        int selectedRadio = ((RadioGroup)findViewById(R.id.radioGroup)).getCheckedRadioButtonId();
+        String option = "all";
+        switch (selectedRadio)
+        {
+            case R.id.radioButton1:
+                option = "all";
+                break;
+            case R.id.radioButton2:
+                option="enrolled";
+                break;
+            case R.id.radioButton3:
+                option = "completed";
+                break;
+            case R.id.radioButton4:
+                option = "dropped";
+                break;
+        }
+        for(Enrollment s:myenrollments)
+        {
+            if(option.equals("all"))
+            {
+                finalList = myenrollments;
+                break;
+            }
+            else if(option.equals(s.status))
+            {
+                finalList.add(s);
+            }
+        }
+
+            updateEnrolledRecycle(finalList);
+
+    }
 
 
 
@@ -483,15 +506,17 @@ public class MainActivityStudent extends AppCompatActivity {
         homeRecycleView.setAdapter(homeAdapter);
     }
 
-    private void updateEnrolledRecycle(ArrayList<Course> c) {
+    private void updateEnrolledRecycle(ArrayList<Enrollment> c) {
 
 
         enrolledCoursesView.setVisibility(View.VISIBLE);
         ((RadioGroup)findViewById(R.id.radioGroup)).setVisibility(View.VISIBLE);
         ((RadioButton)findViewById(R.id.radioButton1)).setSelected(true);
+
         enrolledCoursesView.removeAllViews();
-        enrolledAdapter = new StudentHomeRecycleAdapter(this, c);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
+
+        enrolledAdapter = new StudentEnrolledAdapter(this, c);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1, GridLayoutManager.VERTICAL, false);
         enrolledCoursesView.setLayoutManager(gridLayoutManager);
         enrolledCoursesView.setAdapter(enrolledAdapter);
 

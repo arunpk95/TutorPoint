@@ -29,6 +29,8 @@ public class Filter extends AppCompatActivity {
         reset = findViewById(R.id.reset);
         applyFilter = findViewById(R.id.applyFilter);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

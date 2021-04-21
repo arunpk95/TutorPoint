@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +52,7 @@ public class StudentViewCourse extends AppCompatActivity {
         setContentView(R.layout.activity_student_view_course);
         course = (Course) getIntent().getSerializableExtra("course");
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         ((TextView)(findViewById(R.id.title))).setText(course.title);
@@ -114,6 +116,12 @@ public class StudentViewCourse extends AppCompatActivity {
                             JSONArray enrollArr= obj.getJSONArray("enrollment");
                             for(int i=0;i<enrollArr.length();i++){
                                 JSONObject enr = enrollArr.getJSONObject(i);
+                                if(enr.getJSONObject("student_id").getString("_id").equals(new JSONObject(SharedPreferenceHelper.getSharedPreferenceString(getApplicationContext(),"user","")).getString("_id")))
+                                {
+                                    Toast.makeText(getApplicationContext(), "Already Enrolled", Toast.LENGTH_SHORT).show();
+                                    ((RelativeLayout)findViewById(R.id.buttons)).setVisibility(View.GONE);
+                                }
+
                                 if(enr.getString("status").equals("completed")) {
                                     if (i == 0) {
                                         ((TextView)findViewById(R.id.reviewtitle)).setVisibility(View.VISIBLE);
@@ -123,7 +131,7 @@ public class StudentViewCourse extends AppCompatActivity {
 
 
                                         ((TextView)findViewById(R.id.studetname1)).setText(enr.getJSONObject("student_id").getString("name"));
-                                        ((TextView)findViewById(R.id.comment1)).setText(enr.getString("student_comment"));
+                                        ((TextView)findViewById(R.id.comment1)).setText("''"+enr.getString("student_comment")+"''");
                                     }
                                     if (i == 1) {
                                         ((TextView)findViewById(R.id.studetname2)).setVisibility(View.VISIBLE);
@@ -131,16 +139,16 @@ public class StudentViewCourse extends AppCompatActivity {
                                         ((TextView)findViewById(R.id.comment2)).setVisibility(View.VISIBLE);
 
                                         ((TextView)findViewById(R.id.studetname2)).setText(enr.getJSONObject("student_id").getString("name"));
-                                        ((TextView)findViewById(R.id.comment2)).setText(enr.getString("student_comment"));
+                                        ((TextView)findViewById(R.id.comment2)).setText("''"+enr.getString("student_comment")+"''");
                                     }
                                     studentscount++;
-                                    rating += rating;
+                                    rating += enr.getDouble("student_rating");
                                 }
                             }
                             if (studentscount > 0) {
                                 rating = rating / studentscount;
+                                ((TextView)findViewById(R.id.rating)).setText("Student Ratings: " + String.valueOf(rating)+"/5");
                             }
-                            ((TextView)findViewById(R.id.rating)).setText("Student Ratings: " + String.valueOf(rating)+"/5");
                             ((TextView)findViewById(R.id.availability)).setText(availability);
                             ((TextView)findViewById(R.id.numenr)).setText("No of students enrolled: "+String.valueOf(studentscount));
 

@@ -186,6 +186,11 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
             startActivity(new Intent(getApplicationContext(),Login.class));
             finish();
         }
+        else if(id == R.id.profile)
+        {
+            startActivity(new Intent(getApplicationContext(), EditProfile.class));
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

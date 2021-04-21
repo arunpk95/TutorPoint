@@ -66,6 +66,8 @@ public class AddCourse extends AppCompatActivity {
 
 
         loadImagesView();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         findViewById(R.id.buttonAdd).setOnClickListener(new View.OnClickListener() {
             @Override

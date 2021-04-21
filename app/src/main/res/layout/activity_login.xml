@@ -8,12 +8,16 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="391dp"
-        android:layout_height="186dp"
-        android:src="@drawable/logo"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="-6dp"
-        tools:layout_editor_absoluteY="16dp" />
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="173dp"
+        android:layout_marginLeft="173dp"
+
+        android:layout_marginTop="16dp"
+        android:src="@drawable/logo1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:layout_width="match_parent"
