@@ -31,10 +31,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="210dp"
                 android:layout_marginTop="4dp"
-                android:scaleType="fitXY"
+                android:scaleType="fitCenter"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/a" />
+                app:srcCompat="@drawable/logo" />
 
             <TextView
                 android:id="@+id/courseTitle"
@@ -47,6 +47,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/productImage">
 
             </TextView>
+
 
             <TextView
                 android:id="@+id/category"

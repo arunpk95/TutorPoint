@@ -14,6 +14,8 @@ public class Course implements Serializable {
     public String images[];
     public String id,tutorid;
 
+    public String tutorName;
+
 
     public Course(String title, String desc, Date created_on, Date updated_on, User tutor, String status, String category, int hours_expectd, int student_capacity, int charges_per_hour, String timeSlots,
                   String[] images, String videoLink) {

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -71,6 +72,8 @@ public class MainActivityStudent extends AppCompatActivity {
 
         setTitle("Search Courses");
 
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.Silver)));
+
         homeRecycleView = findViewById(R.id.recycleView);
         progress_circular = findViewById(R.id.progress_circular);
         progress_circular.setVisibility(View.GONE);
@@ -113,7 +116,8 @@ public class MainActivityStudent extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                setTitle("Your Courses");
+                setTitle("Search Courses");
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.Silver)));
                 try {
                     removeAllViews();
                     getCourses();
@@ -125,7 +129,8 @@ public class MainActivityStudent extends AppCompatActivity {
         findViewById(R.id.notification).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setTitle("Your Notifications");
+                setTitle("Requests Sent");
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.Silver)));
                 try {
                     removeAllViews();
                     getMyRequests();
@@ -139,12 +144,13 @@ public class MainActivityStudent extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 setTitle("Your Chats");
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.BlueGrey)));
             }
         });
         findViewById(R.id.courses).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                setTitle("Your Students");
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.BlueGrey)));
                 try {
                     setTitle("Your Enrollments");
                     removeAllViews();
@@ -270,7 +276,8 @@ public class MainActivityStudent extends AppCompatActivity {
                                             obj.getString("video_link")
                                     );
                                     c.id  = obj.getString("_id");
-                                    c.tutorid = obj.getString("tutor_id");
+                                    c.tutorid = new JSONObject(obj.getString("tutor_id")).getString("_id");
+                                    c.tutorName = new JSONObject(obj.getString("tutor_id")).getString("name");
                                     searchcourses.add(c);
 
 

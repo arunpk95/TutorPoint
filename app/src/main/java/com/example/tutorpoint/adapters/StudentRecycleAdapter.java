@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,7 +56,7 @@ public class StudentRecycleAdapter extends RecyclerView.Adapter<StudentRecycleAd
 
         try {
             holder.studentname.setText("Student Name: " + new JSONObject(students.get(position).studentobj).getString("name"));
-            holder.coursetitle.setText("Student Name: " + new JSONObject(students.get(position).courseobj).getString("title"));
+            holder.coursetitle.setText("Course: " + new JSONObject(students.get(position).courseobj).getString("title"));
             holder.comment.setText(students.get(position).student_comment);
             if (students.get(position).student_comment.trim().equals("")) {
                 holder.comment.setVisibility(View.GONE);
@@ -109,15 +110,15 @@ public class StudentRecycleAdapter extends RecyclerView.Adapter<StudentRecycleAd
     public class StudentHolder extends RecyclerView.ViewHolder {
 
         TextView studentname, coursetitle, status, comment;
-        Button chat,drop,complete;
-
+        Button drop,complete;
+        ImageButton chat;
         public StudentHolder(@NonNull View itemView) {
             super(itemView);
             studentname = (TextView)itemView.findViewById(R.id.studentName);
             coursetitle = (TextView)itemView.findViewById(R.id.courseTitle);
             status = (TextView)itemView.findViewById(R.id.courseStatus);
             comment = (TextView)itemView.findViewById(R.id.review);
-            chat = (Button) itemView.findViewById(R.id.chat);
+            chat = (ImageButton) itemView.findViewById(R.id.chat);
             drop = (Button) itemView.findViewById(R.id.drop);
             complete = (Button)itemView.findViewById(R.id.complete);
         }

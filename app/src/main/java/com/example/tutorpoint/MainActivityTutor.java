@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
@@ -65,6 +66,8 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
 
         setTitle("Your Courses");
 
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.Silver)));
+
         homeRecycleView = findViewById(R.id.recycleView);
         progress_circular = findViewById(R.id.progress_circular);
         progress_circular.setVisibility(View.GONE);
@@ -109,6 +112,7 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
             public void onClick(View view) {
 
                 setTitle("Your Courses");
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.Silver)));
                 try {
                     removeAllViews();
                     getCourses();
@@ -121,6 +125,7 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
             @Override
             public void onClick(View view) {
                 setTitle("Your Notifications");
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.Silver)));
                 try {
                     removeAllViews();
                     getNotifications();
@@ -139,12 +144,14 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
             @Override
             public void onClick(View view) {
               setTitle("Your Chats");
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.BlueGrey)));
             }
         });
         findViewById(R.id.students).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 setTitle("Your Students");
+                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.BlueGrey)));
                 try {
                     removeAllViews();
                     getStudents();
@@ -245,6 +252,7 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
                                     obj.getString("video_link")
                             );
                             courses.add(c);
+
                             coursesSpinner.add(c.title);
                         }
                     }

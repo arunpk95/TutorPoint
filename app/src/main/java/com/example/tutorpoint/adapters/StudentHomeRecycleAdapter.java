@@ -17,6 +17,9 @@ import com.example.tutorpoint.R;
 import com.example.tutorpoint.StudentViewCourse;
 import com.example.tutorpoint.modals.Course;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -56,6 +59,12 @@ public class StudentHomeRecycleAdapter extends RecyclerView.Adapter<StudentHomeR
         });
         holder.textView.setText(courses.get(position).title);
         holder.category.setText("Category: "+ courses.get(position).category);
+        try {
+            holder.tutor.setText("by "+ courses.get(position).tutorName);
+        } catch (Exception e) {
+            holder.tutor.setText("");
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -66,12 +75,13 @@ public class StudentHomeRecycleAdapter extends RecyclerView.Adapter<StudentHomeR
 
     public class homeHolder extends RecyclerView.ViewHolder implements Serializable{
         ImageView image;
-        TextView textView,  category;
+        TextView textView,  category, tutor;
         public homeHolder(@NonNull View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.productImage);
             textView = itemView.findViewById(R.id.courseTitle);
             category = itemView.findViewById(R.id.category);
+            tutor = itemView.findViewById(R.id.tutor);
         }
     }
     public void clear() {
