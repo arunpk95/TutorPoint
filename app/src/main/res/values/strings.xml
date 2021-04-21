@@ -23,6 +23,18 @@
         <item>New Zealand</item>
         <item>India</item>
     </string-array>
+    <string-array name="country_arrays1">
+        <item>Select Tutor Country</item>
+        <item>Malaysia</item>
+        <item>United States</item>
+        <item>Canada</item>
+        <item>Indonesia</item>
+        <item>France</item>
+        <item>Italy</item>
+        <item>Singapore</item>
+        <item>New Zealand</item>
+        <item>India</item>
+    </string-array>
 
     <string-array name="category_array">
         <item>Uncategorized</item>

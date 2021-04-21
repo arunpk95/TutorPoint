@@ -24,9 +24,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.tutorpoint.adapters.StudentRecycleAdapter;
 import com.example.tutorpoint.adapters.TutorHomeRecycleAdapter;
+import com.example.tutorpoint.adapters.TutorNotificationAdapter;
 import com.example.tutorpoint.helpers.SharedPreferenceHelper;
 import com.example.tutorpoint.helpers.VolleySingleton;
 import com.example.tutorpoint.modals.Course;
+import com.example.tutorpoint.modals.Enrollment;
 import com.example.tutorpoint.modals.Student;
 import com.example.tutorpoint.modals.User;
 
@@ -40,13 +42,17 @@ import java.util.Date;
 
 public class MainActivityTutor extends AppCompatActivity implements Serializable {
 
-    RecyclerView homeRecycleView, studentRecycleView;
+    RecyclerView homeRecycleView, studentRecycleView, notificationRecycler;
     ProgressBar progress_circular;
     ArrayList<Course> courses = new ArrayList<>();
     TutorHomeRecycleAdapter homeAdapter;
     StudentRecycleAdapter studentRecycleAdapter;
+    TutorNotificationAdapter tutorNotificationAdapter;
+
 
     ArrayList<Student> students = new ArrayList<>();
+
+    ArrayList<Enrollment> requestedLists=new ArrayList<>(), mystudents= new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +65,7 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
         progress_circular = findViewById(R.id.progress_circular);
         progress_circular.setVisibility(View.GONE);
         studentRecycleView = findViewById(R.id.recycleViewStudents);
+        notificationRecycler = findViewById(R.id.recycleViewNotification);
 
         removeAllViews();
 
@@ -149,7 +156,7 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
 
 
         //notificationContents
-        ((LinearLayout)findViewById(R.id.notificationContent)).setVisibility(View.GONE);
+        ((RecyclerView)findViewById(R.id.recycleViewNotification)).setVisibility(View.GONE);
 
 
 
@@ -239,13 +246,58 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
 
 
     private void getNotifications() throws JSONException{
-        students.add(new Student());
-        students.add(new Student());
-        students.add(new Student());
-        students.add(new Student());
-        students.add(new Student());
+        progress_circular.setVisibility(View.VISIBLE);
 
-        updateNotificationRecycler();
+        String url = "https://tutor-point-api.herokuapp.com/tutorPoint/api/getEnrollmentByTutor?tutorId="+new JSONObject(SharedPreferenceHelper.getSharedPreferenceString(getApplicationContext(),"user","")).getString("_id");
+
+        StringRequest request = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        progress_circular.setVisibility(View.INVISIBLE);
+                        try {
+                            JSONArray jsonArray = new JSONObject(s).getJSONArray("enrollment");
+                            requestedLists.clear();
+                            if (jsonArray.length() == 0) {
+                                Toast.makeText(getApplicationContext(), "No requests found.", Toast.LENGTH_LONG).show();
+                            } else {
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject obj = jsonArray.getJSONObject(i);
+
+                                    if(obj.getString("status").equals("requested"))
+                                    {
+                                        requestedLists.add(new Enrollment(
+                                                obj.getString("status"),
+                                                obj.getString("student_comment"),
+                                                0,
+                                                obj.getDouble("student_rating"),
+                                                obj.getJSONObject("tutor_id").toString(),
+                                                obj.getJSONObject("course_id").toString(),
+                                                obj.getJSONObject("student_id").toString(),
+                                                obj.getString("_id")
+
+                                                ));
+                                    }
+
+                                }
+                            }
+                            updateNotificationRecycler();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                progress_circular.setVisibility(View.INVISIBLE);
+                Toast.makeText(getApplicationContext(), "Some error occurred -> " + volleyError, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        request.setShouldCache(false);
+        VolleySingleton.getInstance(this).addToRequestQueue(request);
     }
 
 
@@ -277,6 +329,13 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
 
     private void updateNotificationRecycler()
     {
-        ((LinearLayout)findViewById(R.id.notificationContent)).setVisibility(View.VISIBLE);
+        ((RecyclerView)findViewById(R.id.recycleViewNotification)).setVisibility(View.VISIBLE);
+
+
+        notificationRecycler.removeAllViews();
+        tutorNotificationAdapter = new TutorNotificationAdapter(this, requestedLists);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1, GridLayoutManager.VERTICAL, false);
+        notificationRecycler.setLayoutManager(gridLayoutManager);
+        notificationRecycler.setAdapter(tutorNotificationAdapter);
     }
 }

@@ -98,148 +98,20 @@
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="1" />
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/notificationContent">
 
-        <androidx.cardview.widget.CardView
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:visibility="gone"
+            android:id="@+id/recycleViewNotification"
             android:layout_width="match_parent"
-            android:layout_height="124dp"
-            android:layout_margin="10dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="14dp"
-                android:textStyle="italic"
-                android:textSize="18dp"
-                android:text="Arun wants to enroll for React Native Course">
+            android:layout_height="661dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="70dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="1" />
 
-            </TextView>
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
-                >
-                <Button
-                    android:backgroundTint="#2196F3"
-                    android:text="Chat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="5dp"></Button>
-                <Button
-                    android:backgroundTint="#F44336"
-                    android:text="Reject"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="5dp"></Button>
-                <Button
-                    android:backgroundTint="#009688"
-                    android:text="Enroll"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="5dp"></Button>
-            </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="124dp"
-            android:layout_margin="10dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="14dp"
-                android:textStyle="italic"
-                android:textSize="18dp"
-                android:text="Sid wants to enroll for Sample Course">
-
-            </TextView>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
-                >
-                <Button
-                    android:backgroundTint="#2196F3"
-                    android:text="Chat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="5dp"></Button>
-                <Button
-                    android:backgroundTint="#F44336"
-                    android:text="Reject"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="5dp"></Button>
-                <Button
-                    android:backgroundTint="#009688"
-                    android:text="Enroll"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="5dp"></Button>
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="124dp"
-            android:layout_margin="10dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="14dp"
-                android:textStyle="italic"
-                android:textSize="18dp"
-                android:text="Sam wants to enroll for React Native Course">
-
-            </TextView>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
-                >
-                <Button
-                    android:backgroundTint="#2196F3"
-                    android:text="Chat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="5dp"></Button>
-                <Button
-                    android:backgroundTint="#F44336"
-                    android:text="Reject"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="5dp"></Button>
-                <Button
-                    android:backgroundTint="#009688"
-                    android:text="Enroll"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="5dp"></Button>
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-    </LinearLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"

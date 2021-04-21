@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.tutorpoint.AddCourse;
 import com.example.tutorpoint.R;
+import com.example.tutorpoint.StudentViewCourse;
 import com.example.tutorpoint.modals.Course;
 
 import java.io.Serializable;
@@ -47,10 +48,10 @@ public class StudentHomeRecycleAdapter extends RecyclerView.Adapter<StudentHomeR
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent i = new Intent(context, AddCourse.class);
-//                i.putExtra("pid",courses.get(position));
-//
-//                context.startActivity(i);
+                Intent i = new Intent(context, StudentViewCourse.class);
+                i.putExtra("course",courses.get(position));
+
+                context.startActivity(i);
             }
         });
         holder.textView.setText(courses.get(position).title);
