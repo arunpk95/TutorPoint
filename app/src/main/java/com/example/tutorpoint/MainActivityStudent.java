@@ -29,6 +29,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.example.tutorpoint.adapters.ChatHomeAdapter;
 import com.example.tutorpoint.adapters.StudentEnrolledAdapter;
 import com.example.tutorpoint.adapters.StudentHomeRecycleAdapter;
 import com.example.tutorpoint.adapters.StudentRecycleAdapter;
@@ -36,6 +37,7 @@ import com.example.tutorpoint.adapters.StudentRequestedAdapter;
 import com.example.tutorpoint.adapters.TutorHomeRecycleAdapter;
 import com.example.tutorpoint.helpers.SharedPreferenceHelper;
 import com.example.tutorpoint.helpers.VolleySingleton;
+import com.example.tutorpoint.modals.ChatListUser;
 import com.example.tutorpoint.modals.Course;
 import com.example.tutorpoint.modals.Enrollment;
 import com.example.tutorpoint.modals.User;
@@ -52,7 +54,7 @@ public class MainActivityStudent extends AppCompatActivity {
     Toolbar searchToolBar;
     StudentHomeRecycleAdapter homeAdapter;
     StudentEnrolledAdapter enrolledAdapter;
-    RecyclerView homeRecycleView, enrolledCoursesView, requestedRecycler;
+    RecyclerView homeRecycleView, enrolledCoursesView, requestedRecycler, recyclerViewChat;
     ProgressBar progress_circular;
 
     RadioGroup enrolledFilterRG;
@@ -61,6 +63,9 @@ public class MainActivityStudent extends AppCompatActivity {
 
     ArrayList<Course> searchcourses  = new ArrayList<>(),  enrolledCourses = new ArrayList<>();
     ArrayList<Enrollment> requestedLists = new ArrayList<>(), myenrollments = new ArrayList<>();
+    ArrayList<ChatListUser> chatListUserArrayList = new ArrayList<>();
+
+    ChatHomeAdapter chatHomeAdapter;
 
 
     SearchView searchView;
@@ -148,6 +153,12 @@ public class MainActivityStudent extends AppCompatActivity {
             public void onClick(View view) {
                 setTitle("Your Chats");
                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.BlueGrey)));
+                try {
+                    removeAllViews();
+                    getChats();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         findViewById(R.id.courses).setOnClickListener(new View.OnClickListener(){
@@ -445,10 +456,24 @@ public class MainActivityStudent extends AppCompatActivity {
 
     }
 
+    public void getChats()
+    {
+        chatListUserArrayList.clear();
+        chatListUserArrayList.add(new ChatListUser("ajshdbfaksjhdbfjkas", "Arun", "Hello Arun"));
+        chatListUserArrayList.add(new ChatListUser("ajshdbfaksjhdbfjkas", "Arun", "Hello Arun"));
+        chatListUserArrayList.add(new ChatListUser("ajshdbfaksjhdbfjkas", "Arun", "Hello Arun"));
+        chatListUserArrayList.add(new ChatListUser("ajshdbfaksjhdbfjkas", "Arun", "Hello Arun"));
+
+        updateChatRecycler();
+    }
+
+
     public void removeAllViews(){
         homeRecycleView.setVisibility(View.GONE);
         searchToolBar.setVisibility(View.GONE);
 
+
+        recyclerViewChat.setVisibility(View.GONE);
 
         requestedRecycler.setVisibility(View.GONE);
 
@@ -534,8 +559,17 @@ public class MainActivityStudent extends AppCompatActivity {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1, GridLayoutManager.VERTICAL, false);
         requestedRecycler.setLayoutManager(gridLayoutManager);
         requestedRecycler.setAdapter(studentRequestedAdapter);
+    }
 
+    private void updateChatRecycler()
+    {
+        ((RecyclerView)findViewById(R.id.recycleViewChat)).setVisibility(View.VISIBLE);
 
+        recyclerViewChat.removeAllViews();
+        chatHomeAdapter = new ChatHomeAdapter(this, chatListUserArrayList);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1, GridLayoutManager.VERTICAL, false);
+        recyclerViewChat.setLayoutManager(gridLayoutManager);
+        recyclerViewChat.setAdapter(chatHomeAdapter);
 
     }
 

@@ -25,11 +25,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.tutorpoint.adapters.ChatHomeAdapter;
 import com.example.tutorpoint.adapters.StudentRecycleAdapter;
 import com.example.tutorpoint.adapters.TutorHomeRecycleAdapter;
 import com.example.tutorpoint.adapters.TutorNotificationAdapter;
 import com.example.tutorpoint.helpers.SharedPreferenceHelper;
 import com.example.tutorpoint.helpers.VolleySingleton;
+import com.example.tutorpoint.modals.ChatListUser;
 import com.example.tutorpoint.modals.Course;
 import com.example.tutorpoint.modals.Enrollment;
 import com.example.tutorpoint.modals.Student;
@@ -45,17 +47,20 @@ import java.util.Date;
 
 public class MainActivityTutor extends AppCompatActivity implements Serializable {
 
-    RecyclerView homeRecycleView, studentRecycleView, notificationRecycler;
+    RecyclerView homeRecycleView, studentRecycleView, notificationRecycler, recyclerViewChat;
     ProgressBar progress_circular;
     ArrayList<Course> courses = new ArrayList<>();
     TutorHomeRecycleAdapter homeAdapter;
     StudentRecycleAdapter studentRecycleAdapter;
     TutorNotificationAdapter tutorNotificationAdapter;
+    ChatHomeAdapter chatHomeAdapter;
 
 
     ArrayList<Student> students = new ArrayList<>();
 
     ArrayList<Enrollment> requestedLists=new ArrayList<>(), mystudents= new ArrayList<>();
+
+    ArrayList<ChatListUser> chatListUserArrayList = new ArrayList<>();
 
     ArrayList<String> coursesSpinner = new ArrayList<>();
     Spinner spin;
@@ -73,6 +78,7 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
         progress_circular.setVisibility(View.GONE);
         studentRecycleView = findViewById(R.id.recycleViewStudents);
         notificationRecycler = findViewById(R.id.recycleViewNotification);
+        recyclerViewChat = findViewById(R.id.recycleViewChat);
         coursesSpinner.add("All");
 
 
@@ -145,6 +151,12 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
             public void onClick(View view) {
               setTitle("Your Chats");
                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.BlueGrey)));
+                try {
+                    removeAllViews();
+                    getChats();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         findViewById(R.id.students).setOnClickListener(new View.OnClickListener(){
@@ -172,7 +184,7 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
     @Override
     protected void onResume() {
         super.onResume();
-        setTitle("Search Courses");
+        setTitle("Your Courses");
         removeAllViews();
 
         try {
@@ -217,6 +229,8 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
         ((RecyclerView)findViewById(R.id.recycleViewNotification)).setVisibility(View.GONE);
 
 
+        recyclerViewChat.setVisibility(View.GONE);
+
 
         //studentViewcontents
         studentRecycleView.setVisibility(View.GONE);
@@ -224,6 +238,18 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
         ((Spinner) findViewById(R.id.coursesSpinner)).setVisibility(View.GONE);
         ((RadioGroup)findViewById(R.id.radioGroup)).setVisibility(View.GONE);
     }
+
+    public void getChats()
+    {
+        chatListUserArrayList.clear();
+        chatListUserArrayList.add(new ChatListUser("ajshdbfaksjhdbfjkas", "Arun", "Hello Arun"));
+        chatListUserArrayList.add(new ChatListUser("ajshdbfaksjhdbfjkas", "Arun", "Hello Arun"));
+        chatListUserArrayList.add(new ChatListUser("ajshdbfaksjhdbfjkas", "Arun", "Hello Arun"));
+        chatListUserArrayList.add(new ChatListUser("ajshdbfaksjhdbfjkas", "Arun", "Hello Arun"));
+
+        updateChatRecycler();
+    }
+
 
     private void getCourses() throws JSONException {
 
@@ -505,5 +531,19 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1, GridLayoutManager.VERTICAL, false);
         notificationRecycler.setLayoutManager(gridLayoutManager);
         notificationRecycler.setAdapter(tutorNotificationAdapter);
+    }
+
+
+    private void updateChatRecycler()
+    {
+
+        ((RecyclerView)findViewById(R.id.recycleViewChat)).setVisibility(View.VISIBLE);
+
+        recyclerViewChat.removeAllViews();
+        chatHomeAdapter = new ChatHomeAdapter(this, chatListUserArrayList);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1, GridLayoutManager.VERTICAL, false);
+        recyclerViewChat.setLayoutManager(gridLayoutManager);
+        recyclerViewChat.setAdapter(chatHomeAdapter);
+
     }
 }
