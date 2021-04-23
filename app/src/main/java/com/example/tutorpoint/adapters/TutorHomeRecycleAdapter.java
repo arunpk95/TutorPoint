@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.tutorpoint.AddCourse;
+import com.example.tutorpoint.EditCourse;
 import com.example.tutorpoint.R;
 import com.example.tutorpoint.modals.Course;
 
@@ -46,8 +47,8 @@ public class TutorHomeRecycleAdapter extends RecyclerView.Adapter<TutorHomeRecyc
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(context, AddCourse.class);
-                i.putExtra("pid",courses.get(position));
+                Intent i = new Intent(context, EditCourse.class);
+                i.putExtra("course",courses.get(position));
 
                 context.startActivity(i);
             }

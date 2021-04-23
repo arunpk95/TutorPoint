@@ -24,8 +24,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.example.tutorpoint.adapters.ProductImagesDataAdapters;
+import com.example.tutorpoint.adapters.ProductImagesDataAdaptersEdit;
 import com.example.tutorpoint.helpers.SharedPreferenceHelper;
 import com.example.tutorpoint.helpers.VolleySingleton;
+import com.example.tutorpoint.modals.Course;
 import com.example.tutorpoint.modals.ProductImages;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
@@ -38,12 +40,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddCourse extends AppCompatActivity {
+public class EditCourse extends AppCompatActivity {
 
-
+    Course c;
     EditText titleET, descET,expectedHoursET, perHourET;
     Spinner categorySpinner;
     SwitchMaterial courseStatusSwitch;
@@ -56,7 +59,9 @@ public class AddCourse extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_course);
+        setContentView(R.layout.activity_edit_course);
+
+
         titleET = findViewById(R.id.title);
         descET = findViewById(R.id.desc);
         categorySpinner = findViewById(R.id.spinnerCategory);
@@ -65,20 +70,109 @@ public class AddCourse extends AppCompatActivity {
         courseStatusSwitch = findViewById(R.id.statusswitch);
 
 
+
+        Intent intent = getIntent();
+        c = (Course) intent.getSerializableExtra("course");
+
+        titleET.setText(c.title);
+        descET.setText(c.desc);
+        for(int item = 0; item<getResources().getStringArray(R.array.category_array).length; item++)
+        {
+            if(c.category.equals(getResources().getStringArray(R.array.category_array)[item ]))
+            {
+                categorySpinner.setSelection(item);
+            }
+        }
+        expectedHoursET.setText(String.valueOf(c.hours_expectd));
+        perHourET.setText(String.valueOf(c.charges_per_hour));
+        courseStatusSwitch.setEnabled(true);
+        ((EditText)findViewById(R.id.video_link)).setText(c.videoLink);
+
+        for (String ia : c.images) {
+            productImages.add(new ProductImages(-1, ia));
+        }
+        if (productImages.size() == 0) {
+            productImages.add(new ProductImages(-1, "https://enhancedperformanceinc.com/wp-content/uploads/2017/10/product-dummy.png"));
+        }
+
+        try {
+            JSONArray timeArr = new JSONArray(c.timeSlots);
+            String[] days = {"monday", "tuesday", "wednesday", "thursday","friday","saturday","sunday"};
+
+            for(int i=0;i<days.length;i++)
+            {
+                JSONObject day = timeArr.getJSONObject(i);
+                switch (day.getString("day"))
+                {
+                    case "monday":
+                        if(day.getString("time").length()>1)
+                        {
+                            ((EditText)findViewById(R.id.mon1)).setText(Arrays.asList(day.getString("time").split("-")).get(0));
+                            ((EditText)findViewById(R.id.mon2)).setText(Arrays.asList(day.getString("time").split("-")).get(1));
+                        }
+                        break;
+                    case "tuesday":
+                        if(day.getString("time").length()>1)
+                        {
+                            ((EditText)findViewById(R.id.tue1)).setText(Arrays.asList(day.getString("time").split("-")).get(0));
+                            ((EditText)findViewById(R.id.tue2)).setText(Arrays.asList(day.getString("time").split("-")).get(1));
+                        }
+                        break;
+                    case "wednesday":
+                        if(day.getString("time").length()>1)
+                        {
+                            ((EditText)findViewById(R.id.wed1)).setText(Arrays.asList(day.getString("time").split("-")).get(0));
+                            ((EditText)findViewById(R.id.wed2)).setText(Arrays.asList(day.getString("time").split("-")).get(1));
+                        }
+                        break;
+                    case "thursday":
+                        if(day.getString("time").length()>1)
+                        {
+                            ((EditText)findViewById(R.id.thu1)).setText(Arrays.asList(day.getString("time").split("-")).get(0));
+                            ((EditText)findViewById(R.id.thu2)).setText(Arrays.asList(day.getString("time").split("-")).get(1));
+                        }
+                        break;
+                    case "friday":
+                        if(day.getString("time").length()>1)
+                        {
+                            ((EditText)findViewById(R.id.fri1)).setText(Arrays.asList(day.getString("time").split("-")).get(0));
+                            ((EditText)findViewById(R.id.fri2)).setText(Arrays.asList(day.getString("time").split("-")).get(1));
+                        }
+                        break;
+                    case "saturday":
+                        if(day.getString("time").length()>1)
+                        {
+                            ((EditText)findViewById(R.id.sat1)).setText(Arrays.asList(day.getString("time").split("-")).get(0));
+                            ((EditText)findViewById(R.id.sat2)).setText(Arrays.asList(day.getString("time").split("-")).get(1));
+                        }
+                        break;
+                    case "sunday":
+                        if(day.getString("time").length()>1)
+                        {
+                            ((EditText)findViewById(R.id.sun1)).setText(Arrays.asList(day.getString("time").split("-")).get(0));
+                            ((EditText)findViewById(R.id.sun2)).setText(Arrays.asList(day.getString("time").split("-")).get(1));
+                        }
+                        break;
+                }            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
         loadImagesView();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         findViewById(R.id.buttonAdd).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
-                    addCourse();
+                    updateCourse();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
+
     }
 
 
@@ -102,7 +196,7 @@ public class AddCourse extends AppCompatActivity {
                 false);
         recyclerView.setLayoutManager(linearLayoutManager);
         ArrayList<ProductImages> imageUrlList = productImages;
-        ProductImagesDataAdapters dataAdapter = new ProductImagesDataAdapters(AddCourse.this, imageUrlList);
+        ProductImagesDataAdaptersEdit dataAdapter = new ProductImagesDataAdaptersEdit(EditCourse.this, imageUrlList);
         recyclerView.setAdapter(dataAdapter);
     }
 
@@ -131,6 +225,8 @@ public class AddCourse extends AppCompatActivity {
             }
 
     }
+
+
     public String getPath(Uri uri) {
         String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = managedQuery(uri, projection, null, null, null);
@@ -154,7 +250,7 @@ public class AddCourse extends AppCompatActivity {
                     pDialog.hide();
                     JSONObject jsonObject = new JSONObject(s);
                     if (jsonObject.getString("status").equals("success")) {
-                        Toast.makeText(AddCourse.this, "Uploaded Successful", Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditCourse.this, "Uploaded Successful", Toast.LENGTH_LONG).show();
 
                         productImages.add(new ProductImages(-1,jsonObject.getString("path")));
                         loadImagesView();
@@ -186,7 +282,6 @@ public class AddCourse extends AppCompatActivity {
         VolleySingleton.getInstance(this).addToRequestQueue(request);
         return true;
     }
-
     byte[] getByteArr(String path) {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -204,6 +299,7 @@ public class AddCourse extends AppCompatActivity {
         }
     }
 
+
     public void removeImageFromList(String removeKey) {
         for(int i=0;i<productImages.size();i++)
         {
@@ -215,9 +311,8 @@ public class AddCourse extends AppCompatActivity {
         loadImagesView();
     }
 
-
-    private void addCourse() throws JSONException {
-        String url = "https://tutor-point-api.herokuapp.com/tutorPoint/api/createCourse";
+    private void updateCourse() throws JSONException {
+        String url = "https://tutor-point-api.herokuapp.com/tutorPoint/api/updateCourse";
         final ProgressDialog pDialog = new ProgressDialog(this);
         pDialog.setMessage("Uploading Course...");
         pDialog.show();
@@ -232,6 +327,8 @@ public class AddCourse extends AppCompatActivity {
         jsonObject.put("status", courseStatusSwitch.isEnabled()?"active":"hidden");
         jsonObject.put("tutor_id", new JSONObject(SharedPreferenceHelper.getSharedPreferenceString(getApplicationContext(),"user","")).getString("_id"));
         jsonObject.put("video_link", ((EditText)findViewById(R.id.video_link)).getText().toString());
+        jsonObject.put("_id",c.id);
+
 
         String[] imageArr = new String[productImages.size()];
         int index = 0;
@@ -286,10 +383,10 @@ public class AddCourse extends AppCompatActivity {
                     pDialog.hide();
                     JSONObject jsonObject = new JSONObject(s);
                     if (jsonObject.getString("status").equals("success")) {
-                        Toast.makeText(AddCourse.this, "Uploaded Successfully", Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditCourse.this, "Uploaded Successfully", Toast.LENGTH_LONG).show();
                         finish();
                     } else {
-                        Toast.makeText(AddCourse.this, "Error Occurred", Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditCourse.this, "Error Occurred", Toast.LENGTH_LONG).show();
                         finish();
                     }
                 } catch (JSONException e) {

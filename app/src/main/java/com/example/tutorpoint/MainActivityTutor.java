@@ -169,6 +169,20 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setTitle("Search Courses");
+        removeAllViews();
+
+        try {
+            getCourses();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -256,6 +270,7 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
                                     imgArr,
                                     obj.getString("video_link")
                             );
+                            c.id = obj.getString("_id");
                             courses.add(c);
 
                             coursesSpinner.add(c.title);

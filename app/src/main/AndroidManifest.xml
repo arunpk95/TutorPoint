@@ -10,7 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TutorPoint"
         android:usesCleartextTraffic="true">
-        <activity android:name=".EditProfile"></activity>
+        <activity android:name=".EditCourse"></activity>
+        <activity android:name=".EditProfile" />
         <activity android:name=".StudentReviewAndUpdate" />
         <activity android:name=".StudentViewCourse" />
         <activity android:name=".Filter" />
@@ -26,9 +27,9 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
 </manifest>

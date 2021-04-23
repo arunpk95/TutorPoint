@@ -157,6 +157,7 @@
 
                     <ImageButton
                         android:id="@+id/home"
+                        android:backgroundTint="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
                         android:padding="0dp"
@@ -179,6 +180,7 @@
 
                     <ImageButton
                         android:id="@+id/notification"
+                        android:backgroundTint="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
                         android:padding="0dp"
@@ -201,6 +203,7 @@
 
                     <ImageButton
                         android:id="@+id/chat"
+                        android:backgroundTint="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
                         android:padding="0dp"
@@ -223,6 +226,7 @@
 
                     <ImageButton
                         android:id="@+id/courses"
+                        android:backgroundTint="@color/white"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:padding="0dp"
