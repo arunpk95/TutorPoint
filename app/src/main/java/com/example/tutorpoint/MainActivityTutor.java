@@ -1,5 +1,6 @@
 package com.example.tutorpoint;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,6 +37,11 @@ import com.example.tutorpoint.modals.Course;
 import com.example.tutorpoint.modals.Enrollment;
 import com.example.tutorpoint.modals.Student;
 import com.example.tutorpoint.modals.User;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,6 +69,7 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
     ArrayList<ChatListUser> chatListUserArrayList = new ArrayList<>();
 
     ArrayList<String> coursesSpinner = new ArrayList<>();
+    DatabaseReference chatListRef;
     Spinner spin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,7 +160,27 @@ public class MainActivityTutor extends AppCompatActivity implements Serializable
                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.BlueGrey)));
                 try {
                     removeAllViews();
-                    getChats();
+                    //getChats();
+
+                    JSONObject currentUser = new JSONObject(SharedPreferenceHelper.getSharedPreferenceString(getApplicationContext(), "user", ""));
+                    chatListRef = FirebaseDatabase.getInstance().getReference(String.valueOf(currentUser.get("_id")));
+
+                    chatListRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            chatListUserArrayList.clear();
+                            for (DataSnapshot child : snapshot.getChildren()) {
+                                chatListUserArrayList.add(child.getValue(ChatListUser.class));
+                            }
+                            updateChatRecycler();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

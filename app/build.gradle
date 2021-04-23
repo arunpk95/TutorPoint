@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
 }
+plugins {
+    id 'com.google.gms.google-services'
+}
 
 android {
     compileSdkVersion 29
@@ -43,4 +46,8 @@ dependencies {
 
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
+
+    implementation 'com.google.firebase:firebase-core:16.0.4'
+    implementation 'com.firebaseui:firebase-ui-database:6.3.0'
+    implementation 'com.google.firebase:firebase-database:16.0.4'
 }

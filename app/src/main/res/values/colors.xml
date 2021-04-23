@@ -10,7 +10,7 @@
 
 
     <color name="White">#FFFFFFFF</color>
-    <color name="Silver">#FFC0C0C0</color>
+    <color name="Silver">#2962FF</color>
     <color name="Gray">#FF808080</color>
     <color name="Black">#FF000000</color>
     <color name="Red">#FFFF0000</color>
@@ -25,5 +25,5 @@
     <color name="Navy">#FF000080</color>
     <color name="Fuchsia">#FFFF00FF</color>
     <color name="Purple">#FF800080</color>
-    <color name="BlueGrey">#94C1BC</color>
+    <color name="BlueGrey">#2962FF</color>
 </resources>

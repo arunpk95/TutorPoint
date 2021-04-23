@@ -97,6 +97,25 @@ public class StudentViewCourse extends AppCompatActivity {
                 requestJoin();
             }
         });
+
+        findViewById(R.id.chat).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(StudentViewCourse.this, ChatActivity.class);
+                try {
+                    JSONObject currentUser = new JSONObject(SharedPreferenceHelper.getSharedPreferenceString(getApplicationContext(), "user", ""));
+                    intent.putExtra("firstUserId", String.valueOf(currentUser.get("_id")));
+                    intent.putExtra("firstUserName", String.valueOf(currentUser.get("name")));
+                    intent.putExtra("secondUserId", course.tutorid);
+                    intent.putExtra("secondUserName", course.tutorName);
+                    startActivity(intent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
     }
 
     private void getReviews() {

@@ -19,10 +19,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
+import com.example.tutorpoint.ChatActivity;
 import com.example.tutorpoint.MainActivityStudent;
 import com.example.tutorpoint.MainActivityTutor;
 import com.example.tutorpoint.R;
 import com.example.tutorpoint.StudentReviewAndUpdate;
+import com.example.tutorpoint.helpers.SharedPreferenceHelper;
 import com.example.tutorpoint.helpers.VolleySingleton;
 import com.example.tutorpoint.modals.Enrollment;
 
@@ -77,6 +79,25 @@ public class StudentEnrolledAdapter extends RecyclerView.Adapter<StudentEnrolled
                     break;
                 default:
             }
+
+            holder.chat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ChatActivity.class);
+                    JSONObject currentUser = null;
+                    try {
+                        currentUser = new JSONObject(SharedPreferenceHelper.getSharedPreferenceString(context.getApplicationContext(), "user", ""));
+                        intent.putExtra("firstUserId", String.valueOf(currentUser.get("_id")));
+                        intent.putExtra("firstUserName", String.valueOf(currentUser.get("name")));
+                        intent.putExtra("secondUserId", new JSONObject(students.get(position).tutorobj).getString("_id"));
+                        intent.putExtra("secondUserName", new JSONObject(students.get(position).tutorobj).getString("name"));
+                        context.startActivity(intent);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            });
 
         } catch (JSONException e) {
             e.printStackTrace();

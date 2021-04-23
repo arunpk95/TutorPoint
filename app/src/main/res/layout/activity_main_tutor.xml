@@ -259,7 +259,7 @@
             android:tint="@android:color/white"
             app:fabSize="normal"
             app:layout_anchor="@id/bar"
-            app:srcCompat="@drawable/ic_baseline_add_circle_outline_24" />
+            app:srcCompat="@drawable/plus_white" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -18,6 +18,8 @@
         <activity android:name=".AddCourse" />
         <activity android:name=".MainActivityTutor" />
         <activity android:name=".MainActivityStudent" />
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".ChatUserListActivity" />
         <activity android:name=".SignUp" />
         <activity android:name=".Login">
             <intent-filter>

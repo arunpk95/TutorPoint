@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
+import com.example.tutorpoint.ChatActivity;
 import com.example.tutorpoint.MainActivityStudent;
 import com.example.tutorpoint.MainActivityTutor;
 import com.example.tutorpoint.R;
@@ -95,6 +96,24 @@ public class StudentRecycleAdapter extends RecyclerView.Adapter<StudentRecycleAd
             public void onClick(View view) {
                 updateStatus("completed",students.get(position).id,position);
             }
+        });
+        holder.chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ChatActivity.class);
+                JSONObject currentUser = null;
+                try {
+                    currentUser = new JSONObject(SharedPreferenceHelper.getSharedPreferenceString(context.getApplicationContext(), "user", ""));
+                    intent.putExtra("firstUserId", String.valueOf(currentUser.get("_id")));
+                    intent.putExtra("firstUserName", String.valueOf(currentUser.get("name")));
+                    intent.putExtra("secondUserId", new JSONObject(students.get(position).studentobj).getString("_id"));
+                    intent.putExtra("secondUserName", new JSONObject(students.get(position).studentobj).getString("name"));
+                    context.startActivity(intent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
         });
 
     }
